@@ -19,10 +19,8 @@ import {
 } from "lucide-react";
 import "./App.css";
 
-const API = "";
+const API = "https://windscope-wind-forecast-dashboard.onrender.com";
 
-// Project assumption: use forecasts published by 10:00 UTC
-// on the day before the delivery date.
 const DAY_AHEAD_CUTOFF_HOUR = 10;
 
 function StatCard({ title, value, subtitle, icon: Icon }) {
@@ -65,14 +63,12 @@ function selectDayAheadForecasts(forecasts) {
     cutoff.setUTCDate(cutoff.getUTCDate() - 1);
     cutoff.setUTCHours(DAY_AHEAD_CUTOFF_HOUR, 0, 0, 0);
 
-    // Exclude forecasts published after the assumed decision cutoff.
     if (publicationTime > cutoff) {
       continue;
     }
 
     const existing = selected.get(item.startTime);
 
-    // Keep the most recently published eligible forecast.
     if (
       !existing ||
       publicationTime > new Date(existing.publishTime)
